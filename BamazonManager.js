@@ -1,6 +1,6 @@
 var inquirer = require('inquirer');
 var mysql = require ('mysql');
-var keys = require('./key');
+var keys = require('./keys');
 var connection = mysql.createConnection({
   host: "localhost",
   port:  3306,
