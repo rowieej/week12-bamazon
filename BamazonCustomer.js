@@ -15,6 +15,8 @@ var connection = mysql.createConnection({
 
 });
 
+var array = [];
+
 connection.connect(function(err){
   if (err) throw err;
   console.log("connected as id" + connection.threadId);
@@ -27,6 +29,7 @@ connection.query('SELECT * FROM Products',function(err,res){
     console.log("_______________________ \n");
     console.log("Item ID: " + res[i].ItemID + " | Product: " + res[i].ProductName + " | Price: $" + res[i].Price)
     }
+
 
 // Users should then be prompted with two messages. The first message should ask them the ID of the product they would like to buy. The second message should ask them how many of the product they would like to buy.      
   var inquirer = require('inquirer');
@@ -47,27 +50,22 @@ connection.query('SELECT * FROM Products',function(err,res){
        },
 
     ]).then(function(answers){
-
+      console.log(answers);
+  
 
 // Once the customer has placed the order: Your application should...
 // Check if your store has enough quantity of the product to meet the customer's request. 
-    if (answer.itemNumber == res[i].ItemID && answer.amountToPurchase <= res[i].StockQuantity){
-      // If your store DOES have enough of the product to meet the customer's request, you should fulfill their order. This means that you should show them the total cost of their puchase. Then update the SQL database to reflect the remaining quantity.
-      
+      if (answer.itemNumber == res[i].ItemID && answer.amountToPurchase <= res[i].StockQuantity){
 
-
-    }
-
-    else{
-      // If not, you should respond to the user by saying: "Insufficient quantity" and prevent the order from going through.
-      console.log("Sorry, Insufficient quantity.")
-    }
-
-
-
-      });
-
-  });//ends the connection query
+        console.log("Great Choice!  Your total is $" + (res[i].Price * answer.amountToPurchase));
+        // If your store DOES have enough of the product to meet the customer's request, you should fulfill their order. This means that you should show them the total cost of their puchase. Then update the SQL database to reflect the remaining quantity.
+        }
+      else{
+        // If not, you should respond to the user by saying: "Insufficient quantity" and prevent the order from going through.
+        console.log("Sorry, Insufficient quantity.")
+      }
+    });
+});//ends the connection query
 
 
 
